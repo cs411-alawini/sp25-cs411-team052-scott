@@ -16,12 +16,21 @@
 
 ## Project Information
 
-|   Info      |        Description     |
-| ----------- | ---------------------- |
-|  Title      |       ProjectTitle     |
-| System URL  |      link_to_system    |
-| Video Link  |      link_to_video     |
+|   Info      |        Description            |
+| ----------- | ----------------------------- |
+|  Title      |  Airline Cheap Flight Search  |
+| System URL  |      link_to_system           |
+| Video Link  |      link_to_video            |
 
 ## Project Summary
 
-This is a summary of the project!
+Our project aims to help users find the cheapest airline flights by analyzing historical flight data
+and real-time airfare data. Finding a cheap flight can be difficult, especially with so many
+different airlines and pricing options. Using historical data about flight prices and airport
+locations, we hope to first inform users about the best time to book flights given a specific
+location for the cheapest price. Then, we will search for current flights and show the lowest
+available prices. Our goal is to provide a wide variety of pricing information to inform users
+about their flight choices. Users can be advised to buy tickets, or wait until a cheaper ticket
+opens up based on historical prices. Users will have the option to search flights, view data, and
+save flight information for future reference.
+
