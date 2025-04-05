@@ -2,8 +2,9 @@
   "name": "flight-tracker",
   "version": "0.0.0",
   "private": true,
+  "main": "index.ts",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node index.ts"
   },
@@ -12,6 +13,7 @@
     "body-parser": "^2.2.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "http-errors": "~1.6.3",
@@ -21,6 +23,7 @@
     "typescript": "^5.8.2"
   },
   "devDependencies": {
+    "@types/node": "^22.14.0",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2"
   }
