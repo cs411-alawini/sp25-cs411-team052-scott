@@ -23,7 +23,7 @@ router.get("/:id", async (req: Request, res: Response) => {
         if (airport) {
             res.status(200).json(airport);
         } else {
-            res.status(404).json({ message: 'Airport not found with ID ${id}' });
+            res.status(404).json({ message: `Airport not found with ID ${id}` });
         }
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving airport', error });
