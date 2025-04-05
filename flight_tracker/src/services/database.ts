@@ -1,27 +1,21 @@
 import { Flight } from '../models/flight';
 import { Airport } from '../models/airport';
-import { flightData, airportData } from '../../../data/mockData';
+//import { flightData, airportData } from '../../../data/mockData';
 import pool from './connection';
 import { RowDataPacket } from 'mysql2';
 
-const fd: Flight[] = flightData;
-const ad: Airport[] = airportData;
+//const fd: Flight[] = flightData;
+//const ad: Airport[] = airportData;
 
 export async function getAllFlights(): Promise<Flight[]> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(fd);
-        }, 300);
-    });
+    const [rows] = await pool.query(`SELECT * FROM Flight;`)
+    return rows as Flight[];
 }
 
 export async function getFlightByID(FlightID: number): Promise<Flight | undefined> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const flight = fd.find(flight => flight.FlightID === FlightID);
-            resolve(flight);
-        }, 300);
-    });
+    const sqlQuery = `SELECT * FROM Flight WHERE FlightID = ${FlightID};`;
+    const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
+    return rows[0] as Flight;
 }
 
 
