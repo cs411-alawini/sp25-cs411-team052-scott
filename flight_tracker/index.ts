@@ -2,10 +2,12 @@ import express, { Request, Response } from 'express';
 import airportRoutes from './src/routes/airportRoutes';
 import flightRoutes from './src/routes/flightRoutes';
 import userRoutes from './src/routes/userRoutes';
+import cors from 'cors';
 
 const app = express();
-const PORT = 3007;
+const PORT = process.env.PORT || 3007;
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {

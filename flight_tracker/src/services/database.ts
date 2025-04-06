@@ -1,6 +1,5 @@
 import { Flight } from '../models/flight';
 import { Airport } from '../models/airport';
-//import { flightData, airportData } from '../../../data/mockData';
 import pool from './connection';
 import { RowDataPacket } from 'mysql2';
 import { User } from '../models/user';
