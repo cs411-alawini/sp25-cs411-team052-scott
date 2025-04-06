@@ -4,9 +4,6 @@ import { Airport } from '../models/airport';
 import pool from './connection';
 import { RowDataPacket } from 'mysql2';
 
-//const fd: Flight[] = flightData;
-//const ad: Airport[] = airportData;
-
 export async function getAllFlights(): Promise<Flight[]> {
     const [rows] = await pool.query(`SELECT * FROM Flight;`)
     return rows as Flight[];
