@@ -3,6 +3,7 @@ import { Airport } from '../models/airport';
 //import { flightData, airportData } from '../../../data/mockData';
 import pool from './connection';
 import { RowDataPacket } from 'mysql2';
+import { User } from '../models/user';
 
 //const fd: Flight[] = flightData;
 //const ad: Airport[] = airportData;
@@ -28,4 +29,11 @@ export async function getAirportByID(AirportID: number): Promise<Airport | undef
     const sqlQuery = `SELECT * FROM Airport WHERE AirportID = ${AirportID};`; 
     const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
     return rows[0] as Airport;
+}
+
+
+export async function getNames(UserID: number): Promise<User | undefined> {
+    const sqlQuery = `SELECT * FROM Users WHERE UserID = ${UserID};`;
+    const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
+    return rows[0] as User;
 }
