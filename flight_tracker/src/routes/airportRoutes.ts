@@ -1,16 +1,25 @@
 import { Router, Request, Response } from 'express';
-import { getAllAirports, getAirportByID } from '../services/database';
+import { getAllAirports, getAirportByID, getAirportByName } from '../services/database';
 import { Airport } from '../models/airport';
 
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-    
-    try {
-        const allAirports: Airport[] = await getAllAirports();
-        res.status(200).json(allAirports);
-    } catch (error) {
-        res.status(500).json({ message: 'Error retrieving airports', error });
+    if (!req.query.search) {
+        try {
+            const allAirports: Airport[] = await getAllAirports();
+            res.status(200).json(allAirports);
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving airports', error });
+        }
+    } else {
+        const query = req.query.search as string;
+        try {
+            const airport: Airport | undefined = await getAirportByName(query);
+            res.status(200).json(airport);
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving airport', error });
+        }
     }
 });
 

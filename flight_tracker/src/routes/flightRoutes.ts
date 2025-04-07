@@ -1,18 +1,29 @@
 import { Router, Request, Response } from 'express';
-import { getAllFlights, getFlightByID } from '../services/database';
+import { getAllFlights, getFlightByID, getFlightByAirport } from '../services/database';
 import { Flight } from '../models/flight';
 
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-    
-    try {
-        const allFlights: Flight[] = await getAllFlights();
-        res.status(200).json(allFlights);
-    } catch (error) {
-        res.status(500).json({ message: 'Error retrieving flights', error });
+    if (!req.query.departure && !req.query.destination) {
+        try {
+            const allFlights: Flight[] = await getAllFlights();
+            res.status(200).json(allFlights);
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving flights', error });
+        }
+    } else {
+        const departure = req.query.departure as string;
+        const destination = req.query.destination as string;    
+        try {
+            const flight: Flight[] | undefined = await getFlightByAirport(Number(departure), Number(destination));
+            res.status(200).json(flight);
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving flight', error });
+        }
     }
 });
+
 
 router.get("/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
