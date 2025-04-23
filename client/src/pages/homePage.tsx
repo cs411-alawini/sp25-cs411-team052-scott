@@ -29,20 +29,25 @@ const HomePage: React.FC = () => {
 
     const handleLogin = async (password: string) => {
       console.log("Password entered: ", password);
-      const user = await getUserById(password);
-      if (user) {
+      try {
+        const user = await getUserById(password);
         console.log("User found: ", user);
         setUser(user);
-      } else {
-        console.error("User not found");
+      } catch (error) {
+        console.error("Login error:", error);
       }
+    };
+
+    const handleLogout = () => {
+      setUser(null);
+      console.log("User logged out");
     };
   
     return (
       <>
         <div className="relative">
           <div className="absolute top-4 right-4">
-            <Login onLogin={handleLogin}/>
+            <Login user={user} onLogin={handleLogin} onLogout={handleLogout}/>
           </div>
         </div>
         <div className="flex flex-col items-center bg-white py-24 sm:py-32">

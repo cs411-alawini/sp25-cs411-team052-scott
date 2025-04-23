@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getAllFlights, getFlightByID, getFlightByAirport } from '../services/database';
+import { getAllFlights, getFlightByID, getFlightByAirport, getSavedFlights } from '../services/database';
 import { Flight } from '../models/flight';
 
 const router = Router();

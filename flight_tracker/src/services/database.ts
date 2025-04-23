@@ -65,9 +65,10 @@ export async function getNames(UserID: number): Promise<User | undefined> {
     return rows[0] as User;
 }
 
-// TODO: Implement the function to get saved flights
 export async function getSavedFlights(UserID: number): Promise<Flight[]> {
-    const sqlQuery = ``;
+    const sqlQuery = `SELECT f.FlightID, dep.AirportName AS DepName, dest.AirportName AS DestName, f.FlightPrice FROM Flight f 
+    JOIN Airport dep ON f.Departure = dep.AirportID JOIN Airport dest ON f.Destination = dest.AirportID 
+    NATURAL JOIN Booked_For NATURAL JOIN Booking WHERE UserID = ${UserID} ORDER BY FlightPrice;`;
     const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
     return rows as Flight[];
 }

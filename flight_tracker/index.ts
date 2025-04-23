@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import airportRoutes from './src/routes/airportRoutes';
 import flightRoutes from './src/routes/flightRoutes';
 import userRoutes from './src/routes/userRoutes';
+import savedRoutes from './src/routes/savedRoutes';
 import cors from 'cors';
 
 const app = express();
@@ -17,6 +18,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/airports', airportRoutes);
 app.use('/flights', flightRoutes);
 app.use('/users', userRoutes);
+app.use('/saved', savedRoutes);
 
 
 

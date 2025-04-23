@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { User } from '../services/service';
 
 interface LoginProps {
+    user: User | null;
     onLogin: (password: string) => void;
+    onLogout: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({onLogin}) => {
+const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout }) => {
     const [isLoginVisible, setIsLoginVisible] = useState(false);
     const [password, setPassword] = useState('');
 
@@ -23,15 +26,38 @@ const Login: React.FC<LoginProps> = ({onLogin}) => {
         setIsLoginVisible(false);
     };
 
+    const handleLogout = () => {
+        onLogout();
+    };
+
     return (
         <div>
-            <button
-                onClick={handleLoginClick}
-                className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-            >
-                Login
-            </button>
+            {!user ? (
+                <button
+                    onClick={handleLoginClick}
+                    className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                >
+                    Login
+                </button>
+            ) : (
+                <div className="flex items-center space-x-4">
+                    <span className="text-lg font-semibold">Welcome, {user.FirstName}!</span>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                        >
+                            Saved Flights
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                        >
+                            Logout
+                        </button>
+                </div>
 
+            )}
+            
             {isLoginVisible && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg w-96">
