@@ -1,25 +1,19 @@
 import React, { useState } from 'react'; 
 import FlightList from '../components/flights';
 import SearchBar from '../components/searchBar';
-import { Flight, searchAirportByCode, searchFlightsByAirports, Airport } from '../services/service';
+import Login from '../components/login';
+import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User } from '../services/service';
 
 
 const HomePage: React.FC = () => {
-    // Explicitly typing the state as Flight[] resolves the error.
     const [filteredFlights, setFilteredFlights] = useState<Flight[]>([]);
+
+    const [user, setUser] = useState<User | null>(null);
   
     const handleSearch = async (from: string, to: string) => {
       try {
         const fromAirport: Airport = await searchAirportByCode(from);
         const toAirport: Airport = await searchAirportByCode(to);
-  
-        // if (fromAirports.length === 0 || toAirports.length === 0) {
-        //   console.error("Invalid airport code entered");
-        //   setFilteredFlights([]);
-        //   return;
-        // }
-        // const fromAirport = fromAirports.AirportID;
-        // const toAirport = toAirports;
 
         const flights = await searchFlightsByAirports(
           fromAirport.AirportID,
@@ -32,9 +26,25 @@ const HomePage: React.FC = () => {
         console.error("Search error:", error);
       }
     };
+
+    const handleLogin = async (password: string) => {
+      console.log("Password entered: ", password);
+      const user = await getUserById(password);
+      if (user) {
+        console.log("User found: ", user);
+        setUser(user);
+      } else {
+        console.error("User not found");
+      }
+    };
   
     return (
       <>
+        <div className="relative">
+          <div className="absolute top-4 right-4">
+            <Login onLogin={handleLogin}/>
+          </div>
+        </div>
         <div className="flex flex-col items-center bg-white py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">

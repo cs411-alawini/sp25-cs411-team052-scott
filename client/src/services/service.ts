@@ -1,4 +1,3 @@
-//import { flightData, airportData } from "./mockData";
 import axios from "axios";
 
 export interface Flight {
@@ -15,6 +14,13 @@ export interface Airport {
   AirportName: string;
 }
 
+export interface User {
+  UserID: number;
+  FirstName: string;
+  LastName: string;
+  AirportID: number;
+}
+
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3007";
 
 export const httpClient = axios.create({
@@ -24,39 +30,11 @@ export const httpClient = axios.create({
   },
 });
 
-// export const searchAirportByCode = (code: string): Promise<Airport[]> => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       const filtered = airportData.filter(
-//         (airport) => airport.AirportName.toUpperCase() === code.toUpperCase()
-//       );
-//       resolve(filtered);
-//     }, 500); // Simulate a 500ms delay
-//   });
-// };
-
 export const searchAirportByCode = (code: string): Promise<Airport> => {
   return httpClient
     .get(`/airports?search=${code}`)
     .then((response) => response.data);
 };
-
-// Search for flights by matching departure and destination airport IDs.
-// export const searchFlightsByAirports = (
-//   fromAirportID: number,
-//   toAirportID: number
-// ): Promise<Flight[]> => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       const filtered = flightData.filter(
-//         (flight) =>
-//           flight.Departure === fromAirportID &&
-//           flight.Destination === toAirportID
-//       );
-//       resolve(filtered);
-//     }, 500); // Simulate a 500ms delay
-//   });
-// };
 
 export const searchFlightsByAirports = (
   fromAirportID: number,
@@ -66,3 +44,10 @@ export const searchFlightsByAirports = (
     .get(`/flights?departure=${fromAirportID}&destination=${toAirportID}`)
     .then((response) => response.data);
 };
+
+export const getUserById = (userId: string): Promise<User> => {
+  return httpClient
+    .get(`/users/${userId}`)
+    .then((response) => response.data);
+};
+
