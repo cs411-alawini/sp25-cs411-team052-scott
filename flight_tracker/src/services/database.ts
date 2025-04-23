@@ -64,3 +64,10 @@ export async function getNames(UserID: number): Promise<User | undefined> {
     const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
     return rows[0] as User;
 }
+
+// TODO: Implement the function to get saved flights
+export async function getSavedFlights(UserID: number): Promise<Flight[]> {
+    const sqlQuery = ``;
+    const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
+    return rows as Flight[];
+}
