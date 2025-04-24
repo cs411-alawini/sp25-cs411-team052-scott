@@ -23,4 +23,6 @@ router.get("/:id", async (req: Request, res: Response) => {
     
 });
 
+// Set up routes to send data from frontend to database for CRUD for saved flights
+
 export default router;

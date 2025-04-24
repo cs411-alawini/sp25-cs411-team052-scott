@@ -72,3 +72,20 @@ export async function getSavedFlights(UserID: number): Promise<Flight[]> {
     const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
     return rows as Flight[];
 }
+
+
+// Write SQL queries for CRUD operations, and create a trigger
+// TODO
+export async function saveFlight(UserID: number, FlightID: number): Promise<void> {
+    
+}
+
+// TODO
+export async function deleteFlight(UserID: number, FlightID: number): Promise<void> {
+    
+}
+
+// TODO, figure out how to do this
+export async function updateFlight(FlightID: number, Departure: number, Destination: number, FlightPrice: number): Promise<void> {
+    
+}
