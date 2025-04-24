@@ -1,13 +1,5 @@
 import { Router, Request, Response } from 'express';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { getAllFlights, getFlightByID, getFlightByAirport, getSavedFlights } from '../services/database';
-=======
-import { getAllFlights, getFlightByID, getFlightByAirport, getPopularity } from '../services/database';
->>>>>>> Stashed changes
-=======
-import { getAllFlights, getFlightByID, getFlightByAirport, getPopularity } from '../services/database';
->>>>>>> Stashed changes
+import { getAllFlights, getFlightByID, getFlightByAirport, getSavedFlights, getPopularity} from '../services/database';
 import { Flight } from '../models/flight';
 
 const router = Router();
@@ -38,6 +30,23 @@ router.get("/:id", async (req: Request, res: Response) => {
     
     try {
         const flight: Flight | undefined = await getFlightByID(id);
+        
+        if (flight) {
+            res.status(200).json(flight);
+        } else {
+            res.status(404).json({ message: `Flight not found with ID ${id}` });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving flight', error });
+    }
+});
+
+
+router.get("/popularity/:id", async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    
+    try {
+        const flight: Flight | undefined = await getPopularity(id);
         
         if (flight) {
             res.status(200).json(flight);
