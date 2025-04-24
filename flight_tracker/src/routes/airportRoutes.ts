@@ -1,6 +1,10 @@
 import { Router, Request, Response } from 'express';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { getAllAirports, getAirportByID, getAirportByName } from '../services/database';
+=======
+import { getAllAirports, getAirportByID, getAirportByName} from '../services/database';
+>>>>>>> Stashed changes
 =======
 import { getAllAirports, getAirportByID, getAirportByName} from '../services/database';
 >>>>>>> Stashed changes
