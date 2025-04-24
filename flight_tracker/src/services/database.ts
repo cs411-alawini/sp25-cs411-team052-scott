@@ -65,6 +65,12 @@ export async function getNames(UserID: number): Promise<User | undefined> {
     return rows[0] as User;
 }
 
+export async function getPopularity(FlightID: number): Promise<Flight | undefined> {
+    const sqlQuery = `CALL POPULAR (${FlightID});`;
+    const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
+    return rows[0] as Flight;
+}
+
 export async function getSavedFlights(UserID: number): Promise<Flight[]> {
     const sqlQuery = `SELECT f.FlightID, dep.AirportName AS DepName, dest.AirportName AS DestName, f.FlightPrice FROM Flight f 
     JOIN Airport dep ON f.Departure = dep.AirportID JOIN Airport dest ON f.Destination = dest.AirportID 
@@ -89,4 +95,5 @@ export async function deleteFlight(UserID: number, FlightID: number): Promise<vo
 // TODO, figure out how to do this
 export async function updateFlight(FlightID: number, Departure: number, Destination: number, FlightPrice: number): Promise<void> {
     
+
 }
