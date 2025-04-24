@@ -15,7 +15,7 @@ export interface Airport {
 }
 
 export interface User {
-  UserID: number;
+  UserId: number;
   FirstName: string;
   LastName: string;
   AirportID: number;
@@ -48,6 +48,12 @@ export const searchFlightsByAirports = (
 export const getUserById = (userId: string): Promise<User> => {
   return httpClient
     .get(`/users/${userId}`)
+    .then((response) => response.data);
+};
+
+export const getSavedFlights = (userId: string): Promise<Flight[]> => {
+  return httpClient
+    .get(`/saved/${userId}`)
     .then((response) => response.data);
 };
 

@@ -77,7 +77,8 @@ export async function getSavedFlights(UserID: number): Promise<Flight[]> {
 // Write SQL queries for CRUD operations, and create a trigger
 // TODO
 export async function saveFlight(UserID: number, FlightID: number): Promise<void> {
-    
+    const sqlQuery = `INSERT INTO Booking (UserID, FlightID) VALUES (${UserID}, ${FlightID});`;
+    await pool.query(sqlQuery);
 }
 
 // TODO

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import FlightList from '../components/flights';
 import SearchBar from '../components/searchBar';
 import Login from '../components/login';
-import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User } from '../services/service';
+import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights } from '../services/service';
 
 
 const HomePage: React.FC = () => {
     const [filteredFlights, setFilteredFlights] = useState<Flight[]>([]);
+    const [savedFlights, setSavedFlights] = useState<Flight[]>([]);
 
     const [user, setUser] = useState<User | null>(null);
   
@@ -42,12 +43,26 @@ const HomePage: React.FC = () => {
       setUser(null);
       console.log("User logged out");
     };
+
+    const handleSavedFlights = async () => {
+      if (user) {
+        try {
+          const saved = await getSavedFlights(user.UserId.toString());
+          console.log(`${user.FirstName}'s Saved Flights:`, saved);
+          setSavedFlights(saved);
+        } catch (error) {
+          console.error("Error fetching saved flights:", error);
+        }
+      } else {
+        console.error("User not logged in");
+      }
+    }
   
     return (
       <>
         <div className="relative">
           <div className="absolute top-4 right-4">
-            <Login user={user} onLogin={handleLogin} onLogout={handleLogout}/>
+            <Login user={user} onLogin={handleLogin} onLogout={handleLogout} onSave={handleSavedFlights} saved={savedFlights}/>
           </div>
         </div>
         <div className="flex flex-col items-center bg-white py-24 sm:py-32">
