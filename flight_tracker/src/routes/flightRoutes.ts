@@ -1,5 +1,9 @@
 import { Router, Request, Response } from 'express';
+<<<<<<< Updated upstream
 import { getAllFlights, getFlightByID, getFlightByAirport, getSavedFlights } from '../services/database';
+=======
+import { getAllFlights, getFlightByID, getFlightByAirport, getPopularity } from '../services/database';
+>>>>>>> Stashed changes
 import { Flight } from '../models/flight';
 
 const router = Router();
