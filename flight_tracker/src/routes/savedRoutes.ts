@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getSavedFlights } from '../services/database';
+import { getSavedFlights, saveFlight } from '../services/database';
 import { Flight } from '../models/flight';
 
 const router = Router();
@@ -24,5 +24,16 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 // Set up routes to send data from frontend to database for CRUD for saved flights
+
+router.post("/post/", async (req: Request, res: Response) => {
+    const { userId, flightId } = req.body;
+
+    try {
+        const savedFlight = await saveFlight(userId, flightId);
+        res.status(201).json(savedFlight);
+    } catch (error) {
+        res.status(500).json({ message: 'Error saving flight', error });
+    }
+});
 
 export default router;
