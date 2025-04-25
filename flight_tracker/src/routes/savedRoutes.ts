@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
-import { getSavedFlights, saveFlight } from '../services/database';
+import { getSavedFlights, saveFlight, deleteFlight } from '../services/database';
 import { Flight } from '../models/flight';
+import { SavedFlight } from '../models/savedflight';
 
 const router = Router();
 
@@ -9,7 +10,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 
     try {
-        const saved: Flight[] = await getSavedFlights(id);
+        const saved: SavedFlight[] = await getSavedFlights(id);
         if (saved) {
             res.status(200).json(saved);
         } else {
@@ -33,6 +34,17 @@ router.post("/post/", async (req: Request, res: Response) => {
         res.status(201).json(savedFlight);
     } catch (error) {
         res.status(500).json({ message: 'Error saving flight', error });
+    }
+});
+
+router.delete("/delete/", async (req: Request, res: Response) => {
+    const { UserID, FlightID } = req.body;
+
+    try {
+        await deleteFlight(UserID, FlightID);
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting flight', error });
     }
 });
 

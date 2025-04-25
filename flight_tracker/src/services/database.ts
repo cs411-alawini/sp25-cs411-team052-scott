@@ -3,6 +3,7 @@ import { Airport } from '../models/airport';
 import pool from './connection';
 import { RowDataPacket } from 'mysql2';
 import { User } from '../models/user';
+import { SavedFlight } from '../models/savedflight';
 
 /**
  * Retrieves all flights from the database.
@@ -71,12 +72,12 @@ export async function getPopularity(FlightID: number): Promise<Flight | undefine
     return rows[0] as Flight;
 }
 
-export async function getSavedFlights(UserID: number): Promise<Flight[]> {
-    const sqlQuery = `SELECT f.FlightID, dep.AirportName AS DepName, dest.AirportName AS DestName, f.FlightPrice FROM Flight f 
+export async function getSavedFlights(UserID: number): Promise<SavedFlight[]> {
+    const sqlQuery = `SELECT f.FlightID, dep.AirportName AS DepName, dest.AirportName AS DestName, f.FlightPrice, b.Quantity FROM Flight f 
     JOIN Airport dep ON f.Departure = dep.AirportID JOIN Airport dest ON f.Destination = dest.AirportID 
-    NATURAL JOIN Booked_For NATURAL JOIN Booking WHERE UserID = ${UserID} ORDER BY FlightPrice;`;
+    NATURAL JOIN Booked_For NATURAL JOIN Booking b WHERE UserID = ${UserID} ORDER BY FlightPrice;`;
     const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
-    return rows as Flight[];
+    return rows as SavedFlight[];
 }
 
 
@@ -89,7 +90,7 @@ export async function saveFlight(UserID: number, FlightID: number): Promise<void
 
 // TODO
 export async function deleteFlight(UserID: number, FlightID: number): Promise<void> {
-    const sqlQuery = `DELETE FROM Booking (UserID, FlightID) WHERE (UserID = ${UserID} AND FlightID = ${FlightID});`;
+    const sqlQuery = `DELETE FROM Booking WHERE (UserID = ${UserID} AND FlightID = ${FlightID});`;
     await pool.query(sqlQuery);
 }
 
