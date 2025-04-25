@@ -69,9 +69,9 @@ export const getSavedFlights = (userId: string): Promise<SavedFlight[]> => {
     .then((response) => response.data);
 };
 
-export const saveFlight = (UserID: number, FlightID: number): Promise<void> => {
+export const saveFlight = (UserID: number, FlightID: number, Quantity: number): Promise<void> => {
   return httpClient
-    .post(`/saved/post/`, { UserID, FlightID })
+    .post(`/saved/post/`, { UserID, FlightID, Quantity })
     .then((response) => response.data);
 };
 
