@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FlightList from '../components/flights';
 import SearchBar from '../components/searchBar';
 import Login from '../components/login';
-import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights } from '../services/service';
+import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight } from '../services/service';
 
 
 const HomePage: React.FC = () => {
@@ -57,6 +57,13 @@ const HomePage: React.FC = () => {
         console.error("User not logged in");
       }
     }
+
+    const handleSave = async (FlightID: number) => {
+      console.log(`Saving flight with payload: ${ user!.UserId},${FlightID } `); 
+      saveFlight(user!.UserId, FlightID)
+    };
+
+
   
     return (
       <>
@@ -81,7 +88,7 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col items-center justify-center mx-auto max-w-7xl px-4 sm:px-12 lg:px-8">
           <SearchBar onSearch={handleSearch} />
           <div className="mt-6 py-10 sm:py-15">
-            <FlightList flights={filteredFlights} />
+            <FlightList flights={filteredFlights} onSave={handleSave}/>
           </div>
         </div>
       </>
