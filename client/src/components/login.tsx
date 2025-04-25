@@ -8,9 +8,10 @@ interface LoginProps {
     onSave: () => void;
     saved: SavedFlight[] | null;
     onDelete: (flightID: number) => void;
+    onUpdate: (savedFlightID: number, quantity: number) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved, onDelete} ) => {
+const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved, onDelete, onUpdate} ) => {
     const [isLoginVisible, setIsLoginVisible] = useState(false);
     const [password, setPassword] = useState('');
     const [isSavedVisible, setIsSavedVisible] = useState(false);
@@ -119,16 +120,36 @@ const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved, o
         <span className="font-semibold text-indigo-600">Flight ID:</span> {flight.FlightID} |{" "}
         <span className="font-semibold text-indigo-600">From:</span> {flight.DepName} |{" "}
         <span className="font-semibold text-indigo-600">To:</span> {flight.DestName} |{" "}
-        <span className="font-semibold text-indigo-600">Price:</span> ${flight.FlightPrice} |{" "}
-        <span className="font-semibold text-indigo-600">Quantity:</span> {flight.Quantity} 
+        <span className="font-semibold text-indigo-600">Price:</span> ${flight.FlightPrice}
+        
       </p>
-      <div className="mt-2 flex justify-center">
+      <div className="mt-2 flex justify-center items-center space-x-4">
         <button
           className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
           onClick={(event) => onDelete(flight.FlightID)}
         >
           Delete Flight
         </button>
+        <div className="flex items-center space-x-2">
+    <label htmlFor={`quantity-${flight.FlightID}`} className="text-sm font-medium text-gray-700">
+      Quantity:
+    </label>
+    <select
+      id={`quantity-${flight.FlightID}`}
+      className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
+      defaultValue={flight.Quantity}
+      onChange={(event) => {
+        const newQuantity = parseInt(event.target.value);
+        onUpdate(flight.SavedFlightID, newQuantity);
+        flight.Quantity = newQuantity; }}
+    >
+      {Array.from({ length: 10 }, (_, i) => (
+        <option key={i + 1} value={i + 1}>
+          {i + 1}
+        </option>
+      ))}
+    </select>
+  </div>
       </div>
     </div>
   ))}

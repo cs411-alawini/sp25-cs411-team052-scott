@@ -30,6 +30,7 @@ export interface SavedFlight {
   TimeOfYear: number;
   Quantity: number;
   CompanyID: number;
+  SavedFlightID: number;
 }
 
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3007";
@@ -78,5 +79,11 @@ export const saveFlight = (UserID: number, FlightID: number): Promise<void> => {
 export const deleteFlight = (UserID: number, FlightID: number): Promise<void> => {
   return httpClient
     .delete(`/saved/delete/`, { data: { UserID, FlightID } })
+    .then((response) => response.data);
+};
+
+export const updateFlight = (SavedFlightID: number, Quantity: number): Promise<void> => {
+  return httpClient
+    .put(`/saved/update/`, { SavedFlightID, Quantity })
     .then((response) => response.data);
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FlightList from '../components/flights';
 import SearchBar from '../components/searchBar';
 import Login from '../components/login';
-import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight, deleteFlight, SavedFlight } from '../services/service';
+import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight, deleteFlight, SavedFlight, updateFlight } from '../services/service';
 
 
 const HomePage: React.FC = () => {
@@ -41,6 +41,7 @@ const HomePage: React.FC = () => {
 
     const handleLogout = () => {
       setUser(null);
+      setSavedFlights([]);
       console.log("User logged out");
     };
 
@@ -69,13 +70,18 @@ const HomePage: React.FC = () => {
       setSavedFlights((prevFlights) => prevFlights.filter((flight) => flight.FlightID !== FlightID));
     };
 
+    const handleUpdate = async (SavedFlightID: number, Quantity: number) => {
+      console.log(`Updating flight with payload: ${SavedFlightID },${Quantity } `); 
+      updateFlight(SavedFlightID, Quantity);
+    };
+
 
   
     return (
       <>
         <div className="relative">
           <div className="absolute top-4 right-4">
-            <Login user={user} onLogin={handleLogin} onLogout={handleLogout} onSave={handleSavedFlights} saved={savedFlights} onDelete={handleDelete}/>
+            <Login user={user} onLogin={handleLogin} onLogout={handleLogout} onSave={handleSavedFlights} saved={savedFlights} onDelete={handleDelete} onUpdate={handleUpdate} />
           </div>
         </div>
         <div className="flex flex-col items-center bg-white py-24 sm:py-32">

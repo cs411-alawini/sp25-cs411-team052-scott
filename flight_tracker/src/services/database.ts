@@ -73,7 +73,7 @@ export async function getPopularity(FlightID: number): Promise<Flight | undefine
 }
 
 export async function getSavedFlights(UserID: number): Promise<SavedFlight[]> {
-    const sqlQuery = `SELECT f.FlightID, dep.AirportName AS DepName, dest.AirportName AS DestName, f.FlightPrice, b.Quantity FROM Flight f 
+    const sqlQuery = `SELECT b.SavedFlightID, f.FlightID, dep.AirportName AS DepName, dest.AirportName AS DestName, f.FlightPrice, b.Quantity FROM Flight f 
     JOIN Airport dep ON f.Departure = dep.AirportID JOIN Airport dest ON f.Destination = dest.AirportID 
     NATURAL JOIN Booked_For NATURAL JOIN Booking b WHERE UserID = ${UserID} ORDER BY FlightPrice;`;
     const [rows] = await pool.query<RowDataPacket[]>(sqlQuery);
@@ -95,7 +95,7 @@ export async function deleteFlight(UserID: number, FlightID: number): Promise<vo
 }
 
 // TODO, figure out how to do this
-export async function updateFlight(FlightID: number, Departure: number, Destination: number, FlightPrice: number): Promise<void> {
-    
-
+export async function updateFlight(SavedID: number, Quantity: number): Promise<void> {
+    const sqlQuery = `UPDATE Booking SET Quantity = ${Quantity} WHERE SavedFlightID = ${SavedID};`;
+    await pool.query(sqlQuery);
 }
