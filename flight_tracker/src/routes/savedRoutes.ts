@@ -26,10 +26,10 @@ router.get("/:id", async (req: Request, res: Response) => {
 // Set up routes to send data from frontend to database for CRUD for saved flights
 
 router.post("/post/", async (req: Request, res: Response) => {
-    const { userId, flightId } = req.body;
+    const { UserID, FlightID } = req.body;
 
     try {
-        const savedFlight = await saveFlight(userId, flightId);
+        const savedFlight = await saveFlight(UserID, FlightID);
         res.status(201).json(savedFlight);
     } catch (error) {
         res.status(500).json({ message: 'Error saving flight', error });
