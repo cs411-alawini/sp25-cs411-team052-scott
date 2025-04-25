@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getSavedFlights, saveFlight, deleteFlight } from '../services/database';
+import { getSavedFlights, saveFlight, deleteFlight, updateFlight } from '../services/database';
 import { Flight } from '../models/flight';
 import { SavedFlight } from '../models/savedflight';
 
@@ -45,6 +45,16 @@ router.delete("/delete/", async (req: Request, res: Response) => {
         res.status(204).end();
     } catch (error) {
         res.status(500).json({ message: 'Error deleting flight', error });
+    }
+});
+
+router.put("/update/", async (req: Request, res: Response) => {
+    const { SavedFlightID, Quantity } = req.body;
+    try {
+        await updateFlight(SavedFlightID, Quantity);
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating flight', error });
     }
 });
 
