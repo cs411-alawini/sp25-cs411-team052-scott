@@ -89,7 +89,8 @@ export async function saveFlight(UserID: number, FlightID: number): Promise<void
 
 // TODO
 export async function deleteFlight(UserID: number, FlightID: number): Promise<void> {
-    
+    const sqlQuery = `DELETE FROM Booking (UserID, FlightID) WHERE (UserID = ${UserID} AND FlightID = ${FlightID});`;
+    await pool.query(sqlQuery);
 }
 
 // TODO, figure out how to do this
