@@ -59,9 +59,9 @@ const HomePage: React.FC = () => {
       }
     }
 
-    const handleSave = async (FlightID: number) => {
+    const handleSave = async (FlightID: number, Quantity: number) => {
       console.log(`Saving flight with payload: ${ user!.UserId},${FlightID } `); 
-      saveFlight(user!.UserId, FlightID)
+      saveFlight(user!.UserId, FlightID, Quantity)
     };
 
     const handleDelete = async (FlightID: number) => {
