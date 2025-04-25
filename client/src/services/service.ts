@@ -21,6 +21,17 @@ export interface User {
   AirportID: number;
 }
 
+export interface SavedFlight {
+  FlightID: number;
+  UserID: number;
+  DepName: string;
+  DestName: string;
+  FlightPrice: number;
+  TimeOfYear: number;
+  Quantity: number;
+  CompanyID: number;
+}
+
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3007";
 
 export const httpClient = axios.create({
@@ -51,7 +62,7 @@ export const getUserById = (userId: string): Promise<User> => {
     .then((response) => response.data);
 };
 
-export const getSavedFlights = (userId: string): Promise<Flight[]> => {
+export const getSavedFlights = (userId: string): Promise<SavedFlight[]> => {
   return httpClient
     .get(`/saved/${userId}`)
     .then((response) => response.data);
@@ -60,5 +71,12 @@ export const getSavedFlights = (userId: string): Promise<Flight[]> => {
 export const saveFlight = (UserID: number, FlightID: number): Promise<void> => {
   return httpClient
     .post(`/saved/post/`, { UserID, FlightID })
+    .then((response) => response.data);
+};
+
+
+export const deleteFlight = (UserID: number, FlightID: number): Promise<void> => {
+  return httpClient
+    .delete(`/saved/delete/`, { data: { UserID, FlightID } })
     .then((response) => response.data);
 };

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import FlightList from '../components/flights';
 import SearchBar from '../components/searchBar';
 import Login from '../components/login';
-import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight } from '../services/service';
+import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight, deleteFlight, SavedFlight } from '../services/service';
 
 
 const HomePage: React.FC = () => {
     const [filteredFlights, setFilteredFlights] = useState<Flight[]>([]);
-    const [savedFlights, setSavedFlights] = useState<Flight[]>([]);
+    const [savedFlights, setSavedFlights] = useState<SavedFlight[]>([]);
 
     const [user, setUser] = useState<User | null>(null);
   
@@ -63,13 +63,19 @@ const HomePage: React.FC = () => {
       saveFlight(user!.UserId, FlightID)
     };
 
+    const handleDelete = async (FlightID: number) => {
+      console.log(`Deleting flight with payload: ${ user!.UserId},${FlightID } `); 
+      deleteFlight(user!.UserId, FlightID)
+      setSavedFlights((prevFlights) => prevFlights.filter((flight) => flight.FlightID !== FlightID));
+    };
+
 
   
     return (
       <>
         <div className="relative">
           <div className="absolute top-4 right-4">
-            <Login user={user} onLogin={handleLogin} onLogout={handleLogout} onSave={handleSavedFlights} saved={savedFlights}/>
+            <Login user={user} onLogin={handleLogin} onLogout={handleLogout} onSave={handleSavedFlights} saved={savedFlights} onDelete={handleDelete}/>
           </div>
         </div>
         <div className="flex flex-col items-center bg-white py-24 sm:py-32">
@@ -88,7 +94,7 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col items-center justify-center mx-auto max-w-7xl px-4 sm:px-12 lg:px-8">
           <SearchBar onSearch={handleSearch} />
           <div className="mt-6 py-10 sm:py-15">
-            <FlightList flights={filteredFlights} onSave={handleSave}/>
+            <FlightList flights={filteredFlights} onSave={handleSave} />
           </div>
         </div>
       </>

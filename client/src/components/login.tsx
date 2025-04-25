@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { User, Flight } from '../services/service';
+import { User, SavedFlight } from '../services/service';
 
 interface LoginProps {
     user: User | null;
     onLogin: (password: string) => void;
     onLogout: () => void;
     onSave: () => void;
-    saved: Flight[] | null;
+    saved: SavedFlight[] | null;
+    onDelete: (flightID: number) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved }) => {
+const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved, onDelete} ) => {
     const [isLoginVisible, setIsLoginVisible] = useState(false);
     const [password, setPassword] = useState('');
     const [isSavedVisible, setIsSavedVisible] = useState(false);
@@ -118,11 +119,13 @@ const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved })
         <span className="font-semibold text-indigo-600">Flight ID:</span> {flight.FlightID} |{" "}
         <span className="font-semibold text-indigo-600">From:</span> {flight.DepName} |{" "}
         <span className="font-semibold text-indigo-600">To:</span> {flight.DestName} |{" "}
-        <span className="font-semibold text-indigo-600">Price:</span> ${flight.FlightPrice}
+        <span className="font-semibold text-indigo-600">Price:</span> ${flight.FlightPrice} |{" "}
+        <span className="font-semibold text-indigo-600">Quantity:</span> {flight.Quantity} 
       </p>
       <div className="mt-2 flex justify-center">
         <button
           className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+          onClick={(event) => onDelete(flight.FlightID)}
         >
           Delete Flight
         </button>
