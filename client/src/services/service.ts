@@ -33,6 +33,12 @@ export interface SavedFlight {
   SavedFlightID: number;
 }
 
+export interface PopFlight {
+  OriginAirportID: number;
+  OriginAirportName: string;
+  VisitorCount: number;
+}
+
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3007";
 
 export const httpClient = axios.create({
@@ -85,5 +91,11 @@ export const deleteFlight = (UserID: number, FlightID: number): Promise<void> =>
 export const updateFlight = (SavedFlightID: number, Quantity: number): Promise<void> => {
   return httpClient
     .put(`/saved/update/`, { SavedFlightID, Quantity })
+    .then((response) => response.data);
+};
+
+export const popularity = (FlightID: number): Promise<PopFlight[]> => {
+  return httpClient
+    .get(`/flights/popularity/${FlightID}`)
     .then((response) => response.data);
 };

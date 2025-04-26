@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import FlightList from '../components/flights';
 import SearchBar from '../components/searchBar';
 import Login from '../components/login';
-import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight, deleteFlight, SavedFlight, updateFlight } from '../services/service';
+import HTSearch from '../components/htsearch';
+import HTFlightList from '../components/htflights';
+import { Flight, searchAirportByCode, searchFlightsByAirports, Airport, getUserById, User, getSavedFlights, saveFlight, deleteFlight, SavedFlight, updateFlight, popularity, PopFlight } from '../services/service';
 
 
 const HomePage: React.FC = () => {
     const [filteredFlights, setFilteredFlights] = useState<Flight[]>([]);
     const [savedFlights, setSavedFlights] = useState<SavedFlight[]>([]);
-
+    const [htFlights, setHTFlights] = useState<PopFlight[]>([]);
     const [user, setUser] = useState<User | null>(null);
+    const [isHTVisible, setIsHTVisible] = useState(false);
   
     const handleSearch = async (from: string, to: string) => {
       try {
@@ -42,6 +45,7 @@ const HomePage: React.FC = () => {
     const handleLogout = () => {
       setUser(null);
       setSavedFlights([]);
+      setFilteredFlights([]);
       console.log("User logged out");
     };
 
@@ -75,11 +79,27 @@ const HomePage: React.FC = () => {
       updateFlight(SavedFlightID, Quantity);
     };
 
+    const onhtSearch = async (airport: string) => {
+      const airport_ = await searchAirportByCode(airport);
+      const flights = await popularity(airport_.AirportID);
+      console.log("Found flights:", flights);
+      setHTFlights(flights);
+    };
+
 
   
     return (
       <>
         <div className="relative">
+        <div className="absolute top-4 left-4">
+        <button
+          className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+          onClick={() => setIsHTVisible(!isHTVisible)}
+        >
+          {isHTVisible ? "Search" : "High Traffic"}
+        </button>
+      </div>
+
           <div className="absolute top-4 right-4">
             <Login user={user} onLogin={handleLogin} onLogout={handleLogout} onSave={handleSavedFlights} saved={savedFlights} onDelete={handleDelete} onUpdate={handleUpdate} />
           </div>
@@ -98,10 +118,26 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center mx-auto max-w-7xl px-4 sm:px-12 lg:px-8">
-          <SearchBar onSearch={handleSearch} />
-          <div className="mt-6 py-10 sm:py-15">
-            <FlightList flights={filteredFlights} onSave={handleSave} />
-          </div>
+          {isHTVisible ? (
+            <>
+              <HTSearch onSearch={onhtSearch} />
+              <div className="mt-6 py-10 sm:py-15">
+                <HTFlightList flights={htFlights} onSave={handleSave} />
+              </div>
+
+            
+            </>
+
+          ) : (
+            <>
+              <SearchBar onSearch={handleSearch} />
+              <div className="mt-6 py-10 sm:py-15">
+                <FlightList flights={filteredFlights} onSave={handleSave} />
+              </div>
+            </>
+
+          )}
+          
         </div>
       </>
     );
