@@ -94,7 +94,7 @@ export async function deleteFlight(UserID: number, FlightID: number): Promise<vo
 }
 
 // TODO, figure out how to do this
-export async function updateFlight(FlightID: number, Departure: number, Destination: number, FlightPrice: number): Promise<void> {
-    
-
+export async function updateFlight(UserID: number, FlightID: number, Num: number): Promise<void> {
+    const sqlQuery = `UPDATE Booking SET num_tickets = ${Num} WHERE (UserID = ${UserID} AND FlightID = ${FlightID});`;
+    await pool.query(sqlQuery);
 }
