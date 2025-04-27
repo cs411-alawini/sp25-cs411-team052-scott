@@ -61,7 +61,7 @@ const FlightList: React.FC<FlightListProps> = ({ flights, onSave }) => {
       setQuantity(newQuantity);
       }}
     >
-      {Array.from({ length: 10 }, (_, i) => (
+      {Array.from({ length: 150 }, (_, i) => (
         <option key={i + 1} value={i + 1}>
           {i + 1}
         </option>
