@@ -83,9 +83,17 @@ export async function getSavedFlights(UserID: number): Promise<SavedFlight[]> {
 
 // Write SQL queries for CRUD operations, and create a trigger
 // TODO
-export async function saveFlight(UserID: number, FlightID: number, Quantity: number): Promise<void> {
+export async function saveFlight(UserID: number, FlightID: number, Quantity: number): Promise<{ success: boolean; message: string }> {
     const sqlQuery = `CALL SaveFlightByAirportCap(${UserID}, ${FlightID}, ${Quantity});`;
-    await pool.query(sqlQuery);
+    try {
+        await pool.query(sqlQuery);
+        return { success: true, message: 'Flight saved successfully' };
+    } catch (error: any) {
+        console.error('Error saving flight:', error);
+        const errorMessage = error.sqlMessage || 'An error occurred while saving the flight.';
+        return { success: false, message: errorMessage }; // Rethrow the error to be handled by the caller
+    }
+    
 }
 
 // TODO

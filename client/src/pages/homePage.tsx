@@ -13,6 +13,7 @@ const HomePage: React.FC = () => {
     const [htFlights, setHTFlights] = useState<PopFlight[]>([]);
     const [user, setUser] = useState<User | null>(null);
     const [isHTVisible, setIsHTVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null); 
   
     const handleSearch = async (from: string, to: string) => {
       try {
@@ -51,21 +52,33 @@ const HomePage: React.FC = () => {
 
     const handleSavedFlights = async () => {
       if (user) {
-        try {
           const saved = await getSavedFlights(user.UserId.toString());
           console.log(`${user.FirstName}'s Saved Flights:`, saved);
           setSavedFlights(saved);
-        } catch (error) {
-          console.error("Error fetching saved flights:", error);
-        }
       } else {
         console.error("User not logged in");
       }
     }
 
     const handleSave = async (FlightID: number, Quantity: number) => {
-      console.log(`Saving flight with payload: ${ user!.UserId},${FlightID } `); 
-      saveFlight(user!.UserId, FlightID, Quantity)
+      if (user) {
+
+        const saved = await saveFlight(user!.UserId, FlightID, Quantity)
+        if (saved.success) {
+          console.log(`Saving flight with payload: ${ user!.UserId},${FlightID } `); 
+        } else {
+          setErrorMessage(saved.message);
+          console.log(`Error saving flight: ${saved.message}`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 2000);
+        }
+      } else {
+        setErrorMessage("Please log in to save flights.");
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 2000);
+      }
     };
 
     const handleDelete = async (FlightID: number) => {
@@ -82,8 +95,13 @@ const HomePage: React.FC = () => {
     const onhtSearch = async (airport: string) => {
       const airport_ = await searchAirportByCode(airport);
       const flights = await popularity(airport_.AirportID);
-      console.log("Found flights:", flights);
-      setHTFlights(flights);
+      if (flights[0].OriginAirportID === undefined) {
+        console.log("Not high traffic airport");
+        setHTFlights([]);
+      } else {
+        console.log("Found flights:", flights);
+        setHTFlights(flights);
+      }
     };
 
 
@@ -94,7 +112,9 @@ const HomePage: React.FC = () => {
         <div className="absolute top-4 left-4">
         <button
           className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-          onClick={() => setIsHTVisible(!isHTVisible)}
+          onClick={() => {setIsHTVisible(!isHTVisible);
+                          setFilteredFlights([]);
+                          setHTFlights([]);}}
         >
           {isHTVisible ? "Search" : "High Traffic"}
         </button>
@@ -131,6 +151,18 @@ const HomePage: React.FC = () => {
           ) : (
             <>
               <SearchBar onSearch={handleSearch} />
+              {errorMessage && (
+              <div style={{
+                backgroundColor: 'red',
+                color: 'white',
+                padding: '10px',
+                borderRadius: '5px',
+                marginTop: '10px',
+                textAlign: 'center',
+              }}>
+                {errorMessage}
+        </div>
+      )}
               <div className="mt-6 py-10 sm:py-15">
                 <FlightList flights={filteredFlights} onSave={handleSave} />
               </div>

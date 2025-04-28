@@ -143,7 +143,7 @@ const Login: React.FC<LoginProps> = ({ user, onLogin, onLogout, onSave, saved, o
         onUpdate(flight.SavedFlightID, newQuantity);
         flight.Quantity = newQuantity; }}
     >
-      {Array.from({ length: 10 }, (_, i) => (
+      {Array.from({ length: 150 }, (_, i) => (
         <option key={i + 1} value={i + 1}>
           {i + 1}
         </option>
