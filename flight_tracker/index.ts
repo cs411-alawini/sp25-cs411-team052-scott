@@ -4,9 +4,12 @@ import flightRoutes from './src/routes/flightRoutes';
 import userRoutes from './src/routes/userRoutes';
 import savedRoutes from './src/routes/savedRoutes';
 import cors from 'cors';
+import path from 'path';
 
 const app = express();
 const PORT = process.env.PORT || 3007;
+
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +22,10 @@ app.use('/airports', airportRoutes);
 app.use('/flights', flightRoutes);
 app.use('/users', userRoutes);
 app.use('/saved', savedRoutes);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 
 
