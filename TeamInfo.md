@@ -19,7 +19,7 @@
 |   Info      |        Description            |
 | ----------- | ----------------------------- |
 |  Title      |  Airline Cheap Flight Search  |
-| System URL  |      link_to_system           |
+| System URL  |  http://35.209.169.228:3007/  |
 | Video Link  |      link_to_video            |
 
 ## Project Summary
