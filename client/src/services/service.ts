@@ -75,10 +75,18 @@ export const getSavedFlights = (userId: string): Promise<SavedFlight[]> => {
     .then((response) => response.data);
 };
 
-export const saveFlight = (UserID: number, FlightID: number, Quantity: number): Promise<void> => {
-  return httpClient
-    .post(`/saved/post/`, { UserID, FlightID, Quantity })
-    .then((response) => response.data);
+export const saveFlight = async (UserID: number, FlightID: number, Quantity: number): Promise<{ success: boolean; message: string }> => {
+  const response = await httpClient.post(`/saved/post/`, { UserID, FlightID, Quantity });
+  if (!response.data.success) {
+    console.log(response.data.message);
+  }
+
+  return response.data;
+ 
+ 
+  // return httpClient
+  //   .post(`/saved/post/`, { UserID, FlightID, Quantity })
+  //   .then((response) => response.data);
 };
 
 
