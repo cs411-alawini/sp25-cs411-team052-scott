@@ -1,4 +1,5 @@
 # Stage 3 Revisions
+See all highlighted portions of revsied stage 3 document
 
 1. Rewrote SQL Query 1 as a new query, and adjusted new indices accordingly
 
