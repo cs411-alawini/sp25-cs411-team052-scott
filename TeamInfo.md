@@ -18,7 +18,7 @@
 
 |   Info      |        Description            |
 | ----------- | ----------------------------- |
-|  Title      |  Airline Cheap Flight Search  |
+|  Title      |  Flight Finder                |
 | System URL  |  http://35.209.169.228:3007/  |
 | Video Link  |  https://youtu.be/Xy8resXDC1U |
 
